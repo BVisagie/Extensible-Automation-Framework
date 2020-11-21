@@ -1,0 +1,9 @@
+﻿<RunSettings>
+  <TestRunParameters>
+    <Parameter name="ApplicationURL" value="https://www.wolframalpha.com/" />
+    <Parameter name="PipelineRun" value="false" />
+    <Parameter name="EnableIncognito" value="false" />
+    <Parameter name="TargetBrowser" value="Chrome" />
+    <Parameter name="EdgeBrowserBinaryLocation" value="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" />
+  </TestRunParameters>
+</RunSettings>
