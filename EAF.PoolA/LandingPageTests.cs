@@ -12,8 +12,8 @@ namespace EAF.PoolA
         [Test]
         [TestCase(TestName = "Wolframalpha Landing Page Test A")]
         [Description("This test will verify that the four main categories on the Wolframalpha landing page is loaded.")]
-        [Category("[CLM] Regression Test Pack")]
-        public void Test_Case_43717()
+        [Category("Smoke Test Pack")]
+        public void TestCase_1()
         {
             sessionVariables = new Session().SetupSession(uiTestCase: true, runHeadless: false);
 

@@ -1,4 +1,5 @@
-﻿using EAF.Core.Base;
+﻿using CodenameGenerator;
+using EAF.Core.Base;
 using OpenQA.Selenium;
 
 namespace EAF.Core.PageObjects
@@ -16,10 +17,26 @@ namespace EAF.Core.PageObjects
         private readonly By sectionScienceTechnology = By.XPath("//h2/a/span/span[text()='Science & Technology']");
         private readonly By sectionSocietyCulture = By.XPath("//h2/a/span/span[text()='Society & Culture']");
         private readonly By sectionEverydayLife = By.XPath("//h2/a/span/span[text()='Everyday Life']");
+        private readonly By searchInputBox = By.XPath("//input[@placeholder='Enter what you want to calculate or know about']");
 
         public bool MainCategoriesLoaded()
         {
-            return sessionVariables.ElementDisplayed(sectionMathematics) && sessionVariables.ElementDisplayed(sectionScienceTechnology) && sessionVariables.ElementDisplayed(sectionSocietyCulture) && sessionVariables.ElementDisplayed(sectionEverydayLife);
+            return sessionVariables.ElementDisplayed(sectionMathematics)
+                && sessionVariables.ElementDisplayed(sectionScienceTechnology)
+                && sessionVariables.ElementDisplayed(sectionSocietyCulture)
+                && sessionVariables.ElementDisplayed(sectionEverydayLife);
+        }
+
+        public LandingPage InputRandomSearchParamater()
+        {
+            sessionVariables.ElementSendKeys(searchInputBox, new Generator().Generate());
+            return this;
+        }
+
+        public LandingPage StartSearchUsingKeyboard()
+        {
+            sessionVariables.ElementSendKeys(searchInputBox, Keys.Enter);
+            return this;
         }
     }
 }

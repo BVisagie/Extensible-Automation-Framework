@@ -1,6 +1,6 @@
 ﻿<RunSettings>
   <TestRunParameters>
-    <Parameter name="ApplicationURL" value="https://www.wolframalpha.com/" />
+    <Parameter name="ApplicationUnderTest" value="https://www.wolframalpha.com/" />
     <Parameter name="PipelineRun" value="false" />
     <Parameter name="EnableIncognito" value="false" />
     <Parameter name="TargetBrowser" value="Chrome" />

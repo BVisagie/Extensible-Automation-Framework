@@ -19,7 +19,7 @@ namespace EAF.Core.Base
         {
             Driver = null;
 
-            UrlUnderTest = TestContext.Parameters["ApplicationURL"];
+            UrlUnderTest = TestContext.Parameters["ApplicationUnderTest"];
 
             TestName = TestContext.CurrentContext.Test.Name;
 
@@ -122,6 +122,11 @@ namespace EAF.Core.Base
 
             edgeOptions.BinaryLocation = TestContext.Parameters["EdgeBrowserBinaryLocation"];
             Logger.Debug($"Attempting to find Edge .exe here: {TestContext.Parameters["EdgeBrowserBinaryLocation"]}");
+
+            if (EnableIncognito)
+            {
+                edgeOptions.UseInPrivateBrowsing = true;
+            }
 
             if (RunHeadless)
             {
@@ -295,19 +300,21 @@ namespace EAF.Core.Base
         {
             Logger.Debug($"Attempting to send keys to an element, element: {theElementBy}, keys: {theKey}");
 
-            try
-            {
-                DriverWait.Until(e => e.FindElement(theElementBy)).SendKeys(theKey);
-            }
-            catch (Exception exception) when (exception is TimeoutException
-            || exception is ElementNotInteractableException
-            || exception is ElementNotVisibleException
-            || exception is ElementNotSelectableException
-            || exception is StaleElementReferenceException
-            || exception is NoSuchElementException)
-            {
-                throw;
-            }
+            DriverWait.Until(e => e.FindElement(theElementBy)).SendKeys(theKey);
+
+            //try
+            //{
+            //    DriverWait.Until(e => e.FindElement(theElementBy)).SendKeys(theKey);
+            //}
+            //catch (Exception exception) when (exception is TimeoutException
+            //|| exception is ElementNotInteractableException
+            //|| exception is ElementNotVisibleException
+            //|| exception is ElementNotSelectableException
+            //|| exception is StaleElementReferenceException
+            //|| exception is NoSuchElementException)
+            //{
+            //    throw;
+            //}
         }
 
         /// <summary>
@@ -410,17 +417,19 @@ namespace EAF.Core.Base
         {
             Logger.Debug($"Attempting to check if element is displayed, target element: {theElementBy}");
 
-            try
-            {
-                return DriverWait.Until(e => e.FindElement(theElementBy)).Displayed;
-            }
-            catch (Exception exception) when (exception is TimeoutException
-            || exception is ElementNotInteractableException
-            || exception is NoSuchElementException
-            )
-            {
-                return false;
-            }
+            return DriverWait.Until(e => e.FindElement(theElementBy)).Displayed;
+
+            //try
+            //{
+            //    return DriverWait.Until(e => e.FindElement(theElementBy)).Displayed;
+            //}
+            //catch (Exception exception) when (exception is TimeoutException
+            //|| exception is ElementNotInteractableException
+            //|| exception is NoSuchElementException
+            //)
+            //{
+            //    return false;
+            //}
         }
 
         /// <summary>
