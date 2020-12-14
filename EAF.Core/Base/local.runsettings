@@ -1,6 +1,7 @@
 ﻿<RunSettings>
   <TestRunParameters>
     <Parameter name="ApplicationUnderTest" value="https://www.wolframalpha.com/" />
+    <Parameter name="RunHeadlessBrowser" value="false" />
     <Parameter name="PipelineRun" value="false" />
     <Parameter name="EnableIncognito" value="false" />
     <Parameter name="TargetBrowser" value="Chrome" />

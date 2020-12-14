@@ -27,10 +27,11 @@ namespace EAF.Core.PageObjects
                 && sessionVariables.ElementDisplayed(sectionEverydayLife);
         }
 
-        public LandingPage InputRandomSearchParamater()
+        public string InputRandomSearchParamater()
         {
-            sessionVariables.ElementSendKeys(searchInputBox, new Generator().Generate());
-            return this;
+            string randomSearchValue = new Generator().Generate();
+            sessionVariables.ElementSendKeys(searchInputBox, randomSearchValue);
+            return randomSearchValue;
         }
 
         public LandingPage StartSearchUsingKeyboard()

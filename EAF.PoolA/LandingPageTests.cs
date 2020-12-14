@@ -15,9 +15,7 @@ namespace EAF.PoolA
         [Category("Smoke Test Pack")]
         public void TestCase_1()
         {
-            sessionVariables = new Session().SetupSession(uiTestCase: true, runHeadless: false);
-
-            sessionVariables.NavigateToUrlUnderTest();
+            sessionVariables = new Session().SetupSession(uiTestCase: true, navigateToUrlUnderTest: true);
 
             var pageCategoriesLoaded = new LandingPage(sessionVariables).MainCategoriesLoaded();
             Assert.That(pageCategoriesLoaded, Is.True, "A problem has been encountered with the verification of the four main categories on the Wolframalpha landing page.");

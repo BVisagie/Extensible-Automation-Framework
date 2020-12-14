@@ -15,13 +15,16 @@ namespace EAF.PoolB
         [Category("Smoke Test Pack")]
         public void TestCase_2()
         {
-            sessionVariables = new Session().SetupSession(uiTestCase: true, runHeadless: false);
+            sessionVariables = new Session().SetupSession(uiTestCase: true, navigateToUrlUnderTest: true);
 
-            sessionVariables.NavigateToUrlUnderTest();
+            var landingPage = new LandingPage(sessionVariables);
 
-            new LandingPage(sessionVariables)
-                .InputRandomSearchParamater()
-                .StartSearchUsingKeyboard();
+            var randomSearchValue = landingPage.InputRandomSearchParamater();
+            landingPage.StartSearchUsingKeyboard();
+
+            var searchResultsPage = new SearchResultPage(sessionVariables);
+            bool prePopulatedSearchInputCompare = searchResultsPage.VerifyPreviousSearchInput(randomSearchValue);
+            Assert.That(prePopulatedSearchInputCompare, Is.True, "The random value searched for on the landing page does not seem to be equal to the pre-populated value on the results page.");
         }
 
         [TearDown]

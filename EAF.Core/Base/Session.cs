@@ -14,21 +14,28 @@ namespace EAF.Core.Base
     {
         /// <summary>
         /// This method will setup the base variables for both UI and non-UI test cases.
+        /// Should this be UI test it can also navigate to the URL before returning.
         /// </summary>
-        public Session SetupSession(bool uiTestCase, bool runHeadless)
+        /// <param name="uiTestCase"></param>
+        /// <param name="navigateToUrlUnderTest"></param>
+        /// <returns></returns>
+        public Session SetupSession(bool uiTestCase, bool navigateToUrlUnderTest)
         {
             Driver = null;
-
-            UrlUnderTest = TestContext.Parameters["ApplicationUnderTest"];
-
-            TestName = TestContext.CurrentContext.Test.Name;
-
-            RunHeadless = runHeadless;
 
             SharedMethods = new SharedMethods();
 
             Logger = SetupLogger();
             Logger.Debug("Logger setup complete.");
+
+            UrlUnderTest = TestContext.Parameters["ApplicationUnderTest"];
+            Logger.Debug($"URL under test: {UrlUnderTest}");
+
+            TestName = TestContext.CurrentContext.Test.Name;
+            Logger.Debug($"Test name: {TestName}");
+
+            RunHeadless = string.Equals(TestContext.Parameters["RunHeadlessBrowser"], "true", StringComparison.OrdinalIgnoreCase);
+            Logger.Debug($"Run headless paramater: {RunHeadless}");
 
             UiTestCase = uiTestCase;
             Logger.Debug($"UI Test Case: {UiTestCase}");
@@ -58,6 +65,11 @@ namespace EAF.Core.Base
 
             DriverWait = SetupDriverWait();
 
+            if (navigateToUrlUnderTest)
+            {
+                NavigateToUrl(targetURL: UrlUnderTest);
+            }
+
             //return the instance of the session class
             return this;
         }
@@ -70,9 +82,7 @@ namespace EAF.Core.Base
         /// <returns>ILogger</returns>
         private ILogger SetupLogger()
         {
-            var a = SharedMethods.ShortUid();
-
-            LoggerUid = $"{TestName}-{a}";
+            LoggerUid = $"{TestName}-{SharedMethods.ShortUid()}";
             return new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.File($"{LoggerUid}.txt")
@@ -649,9 +659,9 @@ namespace EAF.Core.Base
             TestContext.AddTestAttachment($"{LoggerUid}.txt");
         }
 
-        public void NavigateToUrlUnderTest()
+        public void NavigateToUrl(string targetURL)
         {
-            Driver.Navigate().GoToUrl(UrlUnderTest);
+            Driver.Navigate().GoToUrl(targetURL);
         }
     }
 }
