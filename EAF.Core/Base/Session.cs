@@ -23,8 +23,6 @@ namespace EAF.Core.Base
         {
             Driver = null;
 
-            SharedMethods = new SharedMethods();
-
             Logger = SetupLogger();
             Logger.Debug("Logger setup complete.");
 
