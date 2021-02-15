@@ -9,5 +9,5 @@ This is a starter or boilerplate test automation framework with the capability o
 To install Extensible Automation Framework (EAF), simply clone and rebuild the project. Should the NUnit tests not be automatically picked up, you can configure local.runsettings file from Visual Studio: `Test--> Configure Run Settings --> Select Solution Wide runsettings File` 
 
 # Build and Test
-NUnit Framework manages tests, you may use Test Explorer to browse available tests and run from there.
+NUnit Framework manages tests, you may use Test Explorer to browse available example tests and run from there.
 If you run in Release mode, the Chrome Browser will might start headlessly, i.e. nothing will appear; to see what is happening, run tests in debug mode.
