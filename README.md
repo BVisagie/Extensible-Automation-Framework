@@ -1,6 +1,6 @@
 # Extensible Test Automation Framework
 
-This is an starter or boilerplate test automation framework with the capability of automating both UI and non UI test cases; the base of the framework also aims to be maintainable and extensible.
+This is a starter or boilerplate test automation framework with the capability of automating both UI and non UI test cases; the base of the framework also aims to be maintainable and extensible.
 
 ## Usage
 
