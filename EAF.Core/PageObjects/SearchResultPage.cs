@@ -5,9 +5,9 @@ namespace EAF.Core.PageObjects
 {
     public class SearchResultPage
     {
-        private readonly Session sessionVariables;
+        private readonly TestSession sessionVariables;
 
-        public SearchResultPage(Session sessionVariables)
+        public SearchResultPage(TestSession sessionVariables)
         {
             this.sessionVariables = sessionVariables;
         }

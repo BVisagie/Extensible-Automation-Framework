@@ -7,30 +7,28 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
 using Serilog;
 using System;
+using System.IO;
 
 namespace EAF.Core.Base
 {
-    public class Session : SessionProperties
+    public class TestSession : TestSessionProperties
     {
         /// <summary>
         /// This method will setup the base variables for both UI and non-UI test cases.
         /// Should this be UI test it can also navigate to the URL before returning.
         /// </summary>
         /// <param name="uiTestCase"></param>
-        /// <param name="navigateToUrlUnderTest"></param>
-        /// <returns></returns>
-        public Session SetupSession(bool uiTestCase, bool navigateToUrlUnderTest)
+        public TestSession SetupTestSession(bool uiTestCase)
         {
-            Driver = null;
+            UniqueTestId = TestContext.CurrentContext.Test.ID;
 
             Logger = SetupLogger();
             Logger.Debug("Logger setup complete.");
 
+            Logger.Debug($"Unique test id: {UniqueTestId}");
+
             UrlUnderTest = TestContext.Parameters["ApplicationUnderTest"];
             Logger.Debug($"URL under test: {UrlUnderTest}");
-
-            TestName = TestContext.CurrentContext.Test.Name;
-            Logger.Debug($"Test name: {TestName}");
 
             RunHeadless = string.Equals(TestContext.Parameters["RunHeadlessBrowser"], "true", StringComparison.OrdinalIgnoreCase);
             Logger.Debug($"Run headless paramater: {RunHeadless}");
@@ -63,33 +61,31 @@ namespace EAF.Core.Base
 
             DriverWait = SetupDriverWait();
 
-            if (navigateToUrlUnderTest)
-            {
-                NavigateToUrl(targetURL: UrlUnderTest);
-            }
+            NavigateToUrl(targetURL: UrlUnderTest);
 
-            //return the instance of the session class
             return this;
         }
 
         /// <summary>
         /// This method will setup and return a configured ILogger logging instance.
         /// It will also create the log file, using the naming convention: testcasename-uniqueid
+        /// Regarding log file location, example: Extensible-Automation-Framework\EAF.PoolA\bin\Debug\net5.0\0-1001
         /// </summary>
-        /// <param name="testCaseName"></param>
         /// <returns>ILogger</returns>
         private ILogger SetupLogger()
         {
-            LoggerUid = $"{TestName}-{SharedMethods.ShortUid()}";
+            LoggerUid = Path.Combine(UniqueTestId, SharedMethods.ShortUid());
             return new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.File($"{LoggerUid}.txt")
+                .MinimumLevel
+                .Debug()
+                .WriteTo
+                .File($"{LoggerUid}.txt")
                 .CreateLogger();
         }
 
         private IWebDriver SetupChromeWebDriver()
         {
-            ChromeOptions chromeOptions = new ChromeOptions();
+            ChromeOptions chromeOptions = new();
 
             if (EnableIncognito)
             {
@@ -112,7 +108,6 @@ namespace EAF.Core.Base
             }
 
             chromeOptions.SetLoggingPreference(LogType.Browser, LogLevel.Debug);
-            chromeOptions.SetLoggingPreference(LogType.Driver, LogLevel.Debug);
 
             Logger.Debug("Now loading Chrome options:");
             Logger.Debug("{@ChromeOptions}", chromeOptions);
@@ -123,7 +118,7 @@ namespace EAF.Core.Base
 
         private IWebDriver SetupEdgeWebDriver()
         {
-            EdgeOptions edgeOptions = new EdgeOptions
+            EdgeOptions edgeOptions = new()
             {
                 UseChromium = true
             };
@@ -152,11 +147,15 @@ namespace EAF.Core.Base
             }
 
             edgeOptions.SetLoggingPreference(LogType.Browser, LogLevel.Debug);
-            edgeOptions.SetLoggingPreference(LogType.Driver, LogLevel.Debug);
 
             Logger.Debug("Now loading Edge options:");
             Logger.Debug("{@EdgeOptions}", edgeOptions);
             Driver = new EdgeDriver(edgeOptions);
+
+            if (PipelineRun)
+            {
+                Driver.Manage().Window.Size = new System.Drawing.Size(width: 1920, height: 960);
+            }
 
             return Driver;
         }
@@ -606,7 +605,7 @@ namespace EAF.Core.Base
             }
         }
 
-        public void TeardownLogic(Session sessionVariable)
+        public void TeardownLogic(TestSession sessionVariable)
         {
             if (TestContext.CurrentContext.Result.Outcome != ResultState.Success && TestContext.CurrentContext.Result.Outcome != ResultState.Inconclusive)
             {

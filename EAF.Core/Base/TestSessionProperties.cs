@@ -4,7 +4,7 @@ using Serilog;
 
 namespace EAF.Core.Base
 {
-    public class SessionProperties
+    public class TestSessionProperties
     {
         public IWebDriver Driver { get; set; }
         public WebDriverWait DriverWait { get; set; }
@@ -15,7 +15,7 @@ namespace EAF.Core.Base
         public ILogger Logger { get; set; }
         public string LoggerUid { get; set; }
         public bool PipelineRun { get; set; }
-        public string TestName { get; set; }
+        public string UniqueTestId { get; set; }
         public bool RunHeadless { get; set; }
     }
 }

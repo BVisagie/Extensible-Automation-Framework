@@ -6,9 +6,9 @@ namespace EAF.Core.PageObjects
 {
     public class LandingPage
     {
-        private readonly Session sessionVariables;
+        private readonly TestSession sessionVariables;
 
-        public LandingPage(Session sessionVariables)
+        public LandingPage(TestSession sessionVariables)
         {
             this.sessionVariables = sessionVariables;
         }

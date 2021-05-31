@@ -7,15 +7,14 @@ namespace EAF.PoolB
     [TestFixture]
     internal class SearchResultTests
     {
-        private Session sessionVariables;
+        private TestSession sessionVariables;
 
-        [Test]
         [TestCase(TestName = "Wolframalpha Search Test A")]
         [Description("This test will verify that a search may be completed from the landing page, and that meaningful results are returned.")]
         [Category("Smoke Test Pack")]
         public void TestCase_2()
         {
-            sessionVariables = new Session().SetupSession(uiTestCase: true, navigateToUrlUnderTest: true);
+            sessionVariables = new TestSession().SetupTestSession(uiTestCase: true);
 
             var landingPage = new LandingPage(sessionVariables);
 
